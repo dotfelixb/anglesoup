@@ -1,7 +1,27 @@
-# This is just an example to get you started. A typical library package
-# exports the main API in this file. Note that you cannot rename this file
-# but you can remove it if you wish.
+import xmltree
+import strutils
 
-proc add*(x, y: int): int =
-  ## Adds two files together.
-  return x + y
+import anglesoup/types
+
+# export from types
+export AngleSoupError
+
+type
+  AngleSoup* = ref object
+    content: string
+    parser: Parser
+
+proc newSoup*(content: string, parser: Parser = Parser.Html): AngleSoup =
+  if content.isEmptyOrWhitespace():
+    raise newException(
+      AngleSoupError, 
+      "Content can't be empty, make something out of nothing"
+    )
+
+  result = AngleSoup(
+    content: content, 
+    parser: parser
+  )
+
+proc prettify*() =
+  discard
