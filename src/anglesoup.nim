@@ -1,27 +1,37 @@
-import xmltree
-import strutils
-
 import anglesoup/types
+import xmltree
 
-# export from types
-export AngleSoupError
 
 type
-  AngleSoup* = ref object
-    content: string
-    parser: Parser
+  AngleSoup* = ref object ## An Html or Xml tree consisting of nodes
+    case k: HtmlKind
+    of Cdata, Comment, Entity, RawText, Text:
+      text*: string
+    of Element:
+      tag*: HtmlElement
 
-proc newSoup*(content: string, parser: Parser = Parser.Html): AngleSoup =
-  if content.isEmptyOrWhitespace():
-    raise newException(
-      AngleSoupError, 
-      "Content can't be empty, make something out of nothing"
-    )
+  HtmlElement* {.acyclic.} = object
+    # tag: string  # <a>
+    name*: string # a
+    content*: seq[AngleSoup] # <a>
+    attrs*: XmlAttributes
 
-  result = AngleSoup(
-    content: content, 
-    parser: parser
-  )
 
-proc prettify*() =
-  discard
+proc createNode(kind: HtmlKind): AngleSoup =
+  result = AngleSoup(k: kind)
+
+proc newAngleSoup*(source: string=""): AngleSoup =
+  ## parse an html or xml file and return the xml node
+  ## as AngleSoup
+  result = createNode(Element)
+
+proc title*(self: AngleSoup): AngleSoup =
+  ## get the html title element from the head tag
+
+proc attrs*(self: AngleSoup): AngleSoup =
+  ## get the html title element from the head tag    
+
+proc text*(self: AngleSoup): AngleSoup =
+  ## get the html title element from the head tag
+
+

@@ -1,7 +1,6 @@
 # To run these tests, simply execute `nimble test`.
 
 import unittest
-
 import anglesoup
 
 let
@@ -23,10 +22,22 @@ let
   </html>  
 """
 
-test "content can't be empty":
-  expect(AngleSoupError):
-    let _ = newSoup("")
+# test "content can't be empty":
+#   expect(AngleSoupError):
+#     let _ = newSoup("")
 
-test "can create a soup":
-  let soup = newSoup(htmlDoc)
-  check(soup of AngleSoup) 
+# test "can create a soup":
+#   let soup = newSoup(htmlDoc)
+#   check(soup of AngleSoup) 
+
+test "create a new anglesoup":
+  let soup = newAngleSoup()
+  check(soup of AngleSoup)
+  echo soup.repr()
+
+# title.name # return the name if the tag, i.e. title, 
+# title.attrs # get attribs for this element
+# title.text # get innertext of element
+
+# test "can get soup title":
+#   check(soup.title == "<title>The Dormouse's story</title>")
